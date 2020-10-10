@@ -11,7 +11,7 @@ class Kamutube extends BaseController
         ];
 
         echo view('layouts/vheader', $data);
-        echo view('user/home');
+        echo view('user/vhome');
         echo view('layouts/vfooter');
     }
 
@@ -22,7 +22,18 @@ class Kamutube extends BaseController
         ];
 
         echo view('layouts/vheader', $data);
-        echo view('user/account');
+        echo view('user/vaccount');
+        echo view('layouts/vfooter');
+    }
+
+    public function account_edit()
+    {
+        $data = [
+            'title' => 'Account - KamuTube'
+        ];
+
+        echo view('layouts/vheader', $data);
+        echo view('user/vaccount_edit');
         echo view('layouts/vfooter');
     }
 
