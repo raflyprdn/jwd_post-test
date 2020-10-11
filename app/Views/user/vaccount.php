@@ -1,3 +1,7 @@
+<?= $this->extend('layouts/vtemplate'); ?>
+
+<?= $this->section('content'); ?>
+
 <body class="bg-light">
     <div class="container">
         <div class="py-5 text-center">
@@ -12,22 +16,22 @@
                 <h4 class="mb-3">Info Akun</h4>
                 <div class="mb-3">
                     <p class="font-weight-bold">Nama</p>
-                    <p>BlaVBlaBla</p>
+                    <p><?= $user->name ?></p>
                 </div>
 
                 <div class="mb-3">
                     <p class="font-weight-bold">Email</p>
-                    <p>blablalba31@example.com</p>
+                    <p><?= $user->email ?></p>
                 </div>
 
                 <div class="mb-3">
                     <p class="font-weight-bold">Username</p>
-                    <p>blablalba31</p>
+                    <p><?= $user->username ?></p>
                 </div>
 
                 <div class="mb-3">
                     <p class="font-weight-bold"> Password</p>
-                    <p>**********</p>
+                    <p><?= $user->password ?></p>
                 </div>
 
                 <div class="mb-3">
@@ -36,3 +40,4 @@
                 </div>
             </div>
         </div>
+        <?= $this->endSection(); ?>

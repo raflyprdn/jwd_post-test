@@ -1,3 +1,7 @@
+<?= $this->extend('layouts/vtemplate'); ?>
+
+<?= $this->section('content'); ?>
+
 <body class="bg-light">
     <div class="container">
         <div class="py-5 text-center">
@@ -80,3 +84,4 @@
                 </form>
             </div>
         </div>
+        <?= $this->endSection(); ?>

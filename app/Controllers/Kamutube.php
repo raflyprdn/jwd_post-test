@@ -4,26 +4,37 @@ namespace App\Controllers;
 
 class Kamutube extends BaseController
 {
+    protected $authModel;
+    public function __counstruct()
+    {
+        if ($this->session->userdata('is_login') != TRUE) { // ketika belum login
+            redirect('auth'); //redirect kehalaman login
+        } else if ($this->session->userdata('type') != 1) { // ketika bukan admin 
+            redirect('kamutube'); //redirect ke halaman dashboard pengguna
+        }
+
+        $this->authModel = new \App\Models\UserModel();
+    }
+
     public function index()
     {
         $data = [
             'title' => 'KamuTube'
         ];
 
-        echo view('layouts/vheader', $data);
-        echo view('user/vhome');
-        echo view('layouts/vfooter');
+        echo view('user/vhome', $data);
     }
 
-    public function account()
+    public function account($username)
     {
+        $auth = $this->authModel->findAll();
+
         $data = [
-            'title' => 'Account - KamuTube'
+            'title' => 'Account - KamuTube',
+            'user' => $auth
         ];
 
-        echo view('layouts/vheader', $data);
-        echo view('user/vaccount');
-        echo view('layouts/vfooter');
+        echo view('user/vaccount', $data);
     }
 
     public function account_edit()
@@ -32,9 +43,7 @@ class Kamutube extends BaseController
             'title' => 'Account - KamuTube'
         ];
 
-        echo view('layouts/vheader', $data);
-        echo view('user/vaccount_edit');
-        echo view('layouts/vfooter');
+        echo view('user/vaccount_edit', $data);
     }
 
     //--------------------------------------------------------------------

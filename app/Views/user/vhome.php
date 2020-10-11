@@ -1,5 +1,7 @@
-<main role="main">
+<?= $this->extend('layouts/vtemplate'); ?>
 
+<?= $this->section('content'); ?>
+<main role="main">
     <section class="jumbotron text-center">
         <div class="container">
             <h1>Album example</h1>
@@ -182,5 +184,5 @@
             </div>
         </div>
     </div>
-
 </main>
+<?= $this->endSection(); ?>
