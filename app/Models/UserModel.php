@@ -10,4 +10,5 @@ class UserModel extends Model
     protected $primaryKey = 'id';
     protected $returnType = 'App\Entities\User';
     protected $useTimestamps = false;
+    protected $allowedFields = ['username', 'password', 'email', 'verification', 'type'];
 }

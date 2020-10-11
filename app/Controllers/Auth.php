@@ -18,14 +18,6 @@ class Auth extends BaseController
     public function index()
     {
         if ($this->request->getPost()) {
-            //lakukan validasi untuk data yang di post
-            $data = $this->request->getPost();
-            $validate = $this->validation->run($data, 'login');
-            $errors = $this->validation->getErrors();
-
-            if ($errors) {
-                return view('login');
-            }
 
             $userModel = new \App\Models\UserModel();
 
@@ -47,12 +39,14 @@ class Auth extends BaseController
 
                     $this->session->set($sessData);
 
-                    return redirect()->to(site_url('home/index'));
+                    return redirect()->to(base_url('kamutube/index'));
                 }
-            } else {
-                $this->session->setFlashdata('errors', ['User Tidak Ditemukan']);
             }
         }
+
+        $data = [
+            'title' => 'Login - KamuTube'
+        ];
 
         echo view('auth/vlogin', $data);
     }
@@ -60,29 +54,20 @@ class Auth extends BaseController
     public function register()
     {
         if ($this->request->getPost()) {
-            //lakukan validasi untuk data yang di post
-            $data = $this->request->getPost();
-            $validate = $this->validation->run($data, 'register');
-            $errors = $this->validation->getErrors();
 
-            //jika tidak ada errors jalanakan
-            if (!$errors) {
-                $userModel = new \App\Models\UserModel();
+            $userModel = new \App\Models\UserModel();
 
-                $user = new \App\Entities\User();
+            $user = new \App\Entities\User();
 
-                $user->username = $this->request->getPost('username');
-                $user->password = $this->request->getPost('password');
+            $user->username = $this->request->getPost('username');
+            $user->password = $this->request->getPost('password');
+            $user->email = $this->request->getPost('email');
+            $user->verification = $this->request->getPost('verification');
+            $user->type = $this->request->getPost('type');
 
-                $user->created_by = 0;
-                $user->created_date = date("Y-m-d H:i:s");
+            $userModel->save($user);
 
-                $userModel->save($user);
-
-                return view('login');
-            }
-
-            $this->session->setFlashdata('errors', $errors);
+            return view('auth/vlogin');
         }
 
         $data = [

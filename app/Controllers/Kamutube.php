@@ -7,9 +7,10 @@ class Kamutube extends BaseController
     protected $authModel;
     public function __counstruct()
     {
-        if ($this->session->userdata('is_login') != TRUE) { // ketika belum login
+        $this->session = session();
+        if ($this->session->sessData('isLoggedIn') != TRUE) { // ketika belum login
             redirect('auth'); //redirect kehalaman login
-        } else if ($this->session->userdata('type') != 1) { // ketika bukan admin 
+        } else if ($this->session->sessData('type') != 1) { // ketika bukan admin 
             redirect('kamutube'); //redirect ke halaman dashboard pengguna
         }
 

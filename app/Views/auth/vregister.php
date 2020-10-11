@@ -36,7 +36,8 @@
 </head>
 
 <body class="text-center">
-    <form class="form-signin">
+    <form class="form-signin" action="<?= base_url('auth/register'); ?>" method="post">
+        <?= csrf_field(); ?>
         <img class="mb-4" src="../assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
         <h1 class="h3 mb-3 font-weight-normal">Register KamuTube</h1>
         <label for="inputEmail" class="sr-only">Email address</label>
@@ -45,7 +46,7 @@
         <input type="text" id="inputEmail" class="form-control" name="username" value="" placeholder="Username" required autofocus>
         <label for="inputPassword" class="sr-only">Password</label>
         <input type="password" id="inputPassword" class="form-control" name="password" value="" placeholder="Password" required>
-        <input type="text" class="form-control" name="verification" value="2" hidden>
+        <input type="text" class="form-control" name="verification" value="0" hidden>
         <input type="text" class="form-control" name="type" value="2" hidden>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
         <p class="mt-5 mb-3 text-muted">&copy; 2017-2020</p>
