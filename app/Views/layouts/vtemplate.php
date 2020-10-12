@@ -49,13 +49,16 @@
                         <a class="nav-link" href="<?= base_url('/kamutube/account'); ?>">Account <span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">My Videos</a>
+                        <a class="nav-link" href="<?= base_url('/kamutube/video'); ?>">My Videos</a>
                     </li>
                 </ul>
                 <form class="form-inline my-2 my-lg-0">
                     <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
                     <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
                 </form>
+                <div>
+                    <a class="btn btn-success ml-5" href="<?= base_url('auth/logout'); ?>">Sign Out</a>
+                </div>
             </div>
         </nav>
     </header>

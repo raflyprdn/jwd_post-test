@@ -2,44 +2,40 @@
 
 namespace App\Controllers;
 
+use CodeIgniter\HTTP\Request;
+
 class Auth extends BaseController
 {
-    protected $authModel;
-    protected $session = null;
-    protected $request = null;
-
-    public function __counstruct()
-    {
-        $this->authModel = new \App\Models\UserModel();
-        $this->validation = \Config\Services::validation();
-        $this->session = session();
-    }
 
     public function index()
     {
+        //dd($this->request->getVar());
         if ($this->request->getPost()) {
 
             $userModel = new \App\Models\UserModel();
+            $session = session();
 
             $username = $this->request->getPost('username');
-            $password = $this->request->getPost('password');
+            $password = md5($this->request->getPost('password'));
 
             $user = $userModel->where('username', $username)->first();
 
             if ($user) {
-                $salt = $user->salt;
-                if ($user->password !== md5($salt . $password)) {
-                    $this->session->setFlashdata('errors', ['Password Salah']);
-                } else {
+                // dd($password);
+                if ($user['password'] == $password) {
+
                     $sessData = [
-                        'username' => $user->username,
-                        'id' => $user->id,
+                        'username' => $user['username'],
+                        'user_id' => $user['user_id'],
                         'isLoggedIn' => TRUE
                     ];
 
-                    $this->session->set($sessData);
+                    // dd($sessData);
+                    $session->set($sessData);
 
                     return redirect()->to(base_url('kamutube/index'));
+                } else {
+                    return redirect()->to(base_url('auth/index'));
                 }
             }
         }
@@ -48,7 +44,7 @@ class Auth extends BaseController
             'title' => 'Login - KamuTube'
         ];
 
-        echo view('auth/vlogin', $data);
+        return view('auth/vlogin', $data);
     }
 
     public function register()
@@ -57,13 +53,13 @@ class Auth extends BaseController
 
             $userModel = new \App\Models\UserModel();
 
-            $user = new \App\Entities\User();
-
-            $user->username = $this->request->getPost('username');
-            $user->password = $this->request->getPost('password');
-            $user->email = $this->request->getPost('email');
-            $user->verification = $this->request->getPost('verification');
-            $user->type = $this->request->getPost('type');
+            $user = [
+                'username' => $this->request->getPost('username'),
+                'password' => md5($this->request->getPost('password')),
+                'email' => $this->request->getPost('email'),
+                'verification' => $this->request->getPost('verification'),
+                'type' => $this->request->getPost('type')
+            ];
 
             $userModel->save($user);
 
@@ -79,6 +75,10 @@ class Auth extends BaseController
 
     public function logout()
     {
+        $session = session();
+        $session->destroy();
+
+        return view('auth/vlogin');
     }
 
     //--------------------------------------------------------------------

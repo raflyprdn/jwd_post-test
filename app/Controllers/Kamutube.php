@@ -2,19 +2,24 @@
 
 namespace App\Controllers;
 
+use App\Models\UserModel;
+
 class Kamutube extends BaseController
 {
-    protected $authModel;
-    public function __counstruct()
+    protected $userModel;
+    protected $session;
+
+    public function __construct()
     {
         $this->session = session();
-        if ($this->session->sessData('isLoggedIn') != TRUE) { // ketika belum login
-            redirect('auth'); //redirect kehalaman login
-        } else if ($this->session->sessData('type') != 1) { // ketika bukan admin 
-            redirect('kamutube'); //redirect ke halaman dashboard pengguna
-        }
+        // dd($this->session->get('user_id'));
+        $this->userModel = new UserModel();
 
-        $this->authModel = new \App\Models\UserModel();
+        if ($this->session->isLoggedIn == TRUE) {
+            return redirect()->to(base_url('kamutube/index'));
+        } else {
+            return redirect()->to(base_url('auth/index'));
+        }
     }
 
     public function index()
@@ -26,25 +31,64 @@ class Kamutube extends BaseController
         echo view('user/vhome', $data);
     }
 
-    public function account($username)
+    public function account()
     {
-        $auth = $this->authModel->findAll();
+        $user = $this->userModel->where(['user_id' => $this->session->get('user_id')])->first();
+        // dd($user);
 
         $data = [
             'title' => 'Account - KamuTube',
-            'user' => $auth
+            'user' => $user
         ];
 
-        echo view('user/vaccount', $data);
+        // dd($data);
+
+        return view('user/vaccount', $data);
     }
 
     public function account_edit()
     {
+        $user = $this->userModel->where(['user_id' => $this->session->get('user_id')])->first();
+        // dd($user);
+
         $data = [
-            'title' => 'Account - KamuTube'
+            'title' => 'Account - KamuTube',
+            'user' => $user
         ];
 
         echo view('user/vaccount_edit', $data);
+    }
+
+    public function save_account()
+    {
+
+        $this->userModel->save([
+            'name' => $this->request->getVar('name'),
+            'username' => $this->request->getVar('username'),
+            'password' => $this->request->getVar('password'),
+            'email' => $this->request->getVar('email'),
+            'phone' => $this->request->getVar('phone')
+        ]);
+
+        redirect()->to('kamutube/account');
+    }
+
+    public function video()
+    {
+        $user = $this->userModel->where(['user_id' => $this->session->get('user_id')])->first();
+        $data = [
+            'title' => $user['username'] . ' - KamuTube'
+        ];
+
+        return view('user/vvideo', $data);
+    }
+
+    public function save_video()
+    {
+    }
+
+    public function delete_video()
+    {
     }
 
     //--------------------------------------------------------------------
